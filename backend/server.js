@@ -20,6 +20,7 @@ mongoose
 
 // 👤 User Schema
 const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
 
@@ -36,7 +37,7 @@ const User = mongoose.model("User", userSchema);
 // 📝 Register route
 app.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     if (!email || !password)
       return res
@@ -50,7 +51,7 @@ app.post("/register", async (req, res) => {
         .json({ success: false, message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword });
+    const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
     res.json({ success: true, message: "User registered successfully" });
@@ -88,6 +89,7 @@ app.post("/login", async (req, res) => {
       token,
       user: {
         _id: user._id,
+        name: user.name,
         email: user.email,
         experience: user.experience,
         level: user.level,

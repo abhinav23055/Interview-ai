@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 
 // This component is now simpler. It doesn't fetch its own data.
 // It just displays the props it receives from App.js.
-function ProfilePage({ sessionId, experience, userLevel, progress, achievements }) {
+function ProfilePage({ userName, sessionId, experience, userLevel, progress, achievements }) {
   const navigate = useNavigate();
 
   const buttonStyle = {
@@ -28,7 +28,7 @@ function ProfilePage({ sessionId, experience, userLevel, progress, achievements 
         minHeight: "100vh",
       }}
     >
-      <Navbar sessionId={sessionId} />
+      <Navbar sessionId={sessionId} userName={userName}/>
 
       <div
         className="fade-in"
@@ -44,8 +44,10 @@ function ProfilePage({ sessionId, experience, userLevel, progress, achievements 
         <h1 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
           👤 Profile
         </h1>
+        
+        {/* 👇 THIS IS THE UPDATED LINE 👇 */}
         <p style={{ textAlign: "center", color: "#666", marginBottom: "30px" }}>
-          Welcome, <b>{sessionId}</b>
+          Welcome, <b>{userName}</b>
         </p>
 
         {/* Lifetime Stats - Now using props from App.js */}

@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-function Dashboard({ experience, level, sessionId, progress, achievements, userLevel }) {
+// The userName prop is already being received correctly.
+function Dashboard({ userName, experience, level, sessionId, progress, achievements, userLevel }) {
   const navigate = useNavigate();
 
-  // ✅ Button style
   const buttonStyle = {
     padding: "12px 24px",
     fontSize: "16px",
@@ -26,7 +26,7 @@ function Dashboard({ experience, level, sessionId, progress, achievements, userL
         minHeight: "100vh",
       }}
     >
-      <Navbar sessionId={sessionId} />
+      <Navbar sessionId={sessionId} userName={userName} /> {/* Also pass userName to Navbar */}
 
       <div
         className="fade-in"
@@ -42,8 +42,10 @@ function Dashboard({ experience, level, sessionId, progress, achievements, userL
         <h1 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
           🎯 Dashboard
         </h1>
+
+        {/* 👇 THIS IS THE UPDATED LINE 👇 */}
         <p style={{ textAlign: "center", color: "#666", marginBottom: "30px" }}>
-          Welcome back, <b>{sessionId || "Guest"}</b> 👋
+          Welcome back, <b>{userName || "Guest"}</b> 👋
         </p>
 
         {/* Quick Info */}

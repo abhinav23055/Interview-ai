@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 // Component Imports
-import ProtectedRoute from "./components/ProtectedRoute"; // 👈 Import the security component
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Page Imports
 import ExperiencePage from "./pages/ExperiencePage";
@@ -20,6 +20,7 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [achievements, setAchievements] = useState([]);
   const [userLevel, setUserLevel] = useState(1);
+  const [userName, setUserName] = useState(""); // 👈 ADD THIS LINE
   const [sessionId, setSessionId] = useState(localStorage.getItem("userId") || "");
 
   // --- Automatically fetch user data on login or page refresh ---
@@ -39,6 +40,7 @@ function App() {
           setProgress(user.progress || 0);
           setAchievements(user.achievements || []);
           setUserLevel(user.userLevel || 1);
+          setUserName(user.name || ""); // 👈 ADD THIS LINE
         }
       } catch (error) {
         console.error("Failed to fetch user data on app load:", error);
@@ -51,7 +53,10 @@ function App() {
   return (
     <Routes>
       {/* --- Public Route (Visible to everyone) --- */}
-      <Route path="/" element={<LoginPage setSessionId={setSessionId} />} />
+      <Route 
+        path="/" 
+        element={<LoginPage setSessionId={setSessionId} setUserName={setUserName} />} // 👈 UPDATE THIS LINE
+      />
 
       {/* --- Protected Routes (Visible only to logged-in users) --- */}
       <Route
@@ -75,6 +80,7 @@ function App() {
         element={
           <ProtectedRoute sessionId={sessionId}>
             <Dashboard
+              userName={userName} // 👈 ADD THIS LINE
               experience={experience}
               level={level}
               sessionId={sessionId}
@@ -90,6 +96,7 @@ function App() {
         element={
           <ProtectedRoute sessionId={sessionId}>
             <ProfilePage
+              userName={userName} // 👈 ADD THIS LINE
               sessionId={sessionId}
               experience={experience}
               userLevel={userLevel}
