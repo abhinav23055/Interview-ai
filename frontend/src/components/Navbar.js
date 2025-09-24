@@ -13,40 +13,36 @@ function Navbar({ sessionId, userName }) {
   };
 
   return (
-    <div
-      style={{
-        background: "linear-gradient(135deg, #667eea, #764ba2)",
-        padding: "15px 30px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        color: "white",
-        boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
-      }}
-    >
-      <h2 style={{ cursor: "pointer", margin: 0 }} onClick={() => navigate("/dashboard")}>
-        🎯 Interview AI
-      </h2>
-
-      <div style={{ display: "flex", gap: "20px" }}>
-        <span style={{ cursor: "pointer" }} onClick={() => navigate("/dashboard")}>
-          Dashboard
-        </span>
-        <span style={{ cursor: "pointer" }} onClick={() => navigate("/profile")}>
-          Profile
-        </span>
-        <span style={{ cursor: "pointer" }} onClick={handleLogout}>
-          Logout
-        </span>
+    <nav className="navbar fade-in">
+      <div className="navbar-brand" onClick={() => navigate("/dashboard")}>
+        <span className="navbar-icon">🎯</span>
+        <span className="navbar-title">Interview AI</span>
       </div>
 
-      <div>
-        <span style={{ fontSize: "14px", opacity: "0.9" }}>
-          {/* 2. Display the userName if it exists, otherwise show Guest */}
-          {userName ? `👤 ${userName}` : "Guest"}
+      <div className="navbar-menu">
+        <div className="navbar-item" onClick={() => navigate("/dashboard")}>
+          <span className="navbar-item-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+        <div className="navbar-item" onClick={() => navigate("/profile")}>
+          <span className="navbar-item-icon">👤</span>
+          <span>Profile</span>
+        </div>
+        <div className="navbar-item logout" onClick={handleLogout}>
+          <span className="navbar-item-icon">🚪</span>
+          <span>Logout</span>
+        </div>
+      </div>
+
+      <div className="navbar-user">
+        <div className="user-avatar">
+          <span className="avatar-icon">👤</span>
+        </div>
+        <span className="user-name">
+          {userName || "Guest"}
         </span>
       </div>
-    </div>
+    </nav>
   );
 }
 

@@ -127,48 +127,49 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", background: "#f4f7f9", minHeight: "100vh" }}>
+    <div className="rounds-container">
       <Navbar sessionId={sessionId} />
-      <div style={{ maxWidth: "800px", margin: "40px auto", padding: "40px", background: "white", borderRadius: "12px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", textAlign: "center" }}>
-        
-        <h1 style={{ color: "#333", marginBottom: "10px" }}>Interview Session</h1>
-        <p style={{ color: "#777", marginBottom: "30px", fontSize: "1.2rem" }}>Round {currentRound} of {TOTAL_ROUNDS}</p>
+      <div className="container">
+        <div className="rounds-card glass fade-in">
+          <h1 className="rounds-title">Interview Session</h1>
+          <p className="rounds-subtitle">Round {currentRound} of {TOTAL_ROUNDS}</p>
 
-        {isLoading && <p>Loading...</p>}
+          {isLoading && <p className="loading-text">Loading...</p>}
 
-        {!isLoading && (
-          <>
-            {/* Question Display */}
-            <div style={{ marginBottom: "30px", padding: "20px", background: "#f9f9f9", borderRadius: "8px", border: "1px solid #e0e0e0" }}>
-              <h3 style={{ color: "#555", marginBottom: "10px" }}>Question:</h3>
-              <p style={{ fontSize: "1.2rem", color: "#333", lineHeight: "1.6" }}>{question}</p>
-            </div>
-
-            {/* Answer and Feedback Section */}
-            {!isRoundOver ? (
-              <>
-                <textarea
-                  value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
-                  placeholder="Type your answer here..."
-                  rows={10}
-                  style={{ width: "100%", padding: "15px", fontSize: "16px", borderRadius: "8px", border: "1px solid #ccc", boxSizing: "border-box" }}
-                />
-                <button onClick={handleSubmitAnswer} style={{ padding: "12px 24px", fontSize: "16px", marginTop: "20px", cursor: "pointer", background: "#007bff", color: "white", border: "none", borderRadius: "8px" }}>
-                  Submit Answer
-                </button>
-              </>
-            ) : (
-              <div style={{ marginTop: "20px", padding: "20px", background: "#e8f5e9", color: "#2e7d32", borderRadius: "8px" }}>
-                <h3 style={{ marginBottom: "10px" }}>Feedback:</h3>
-                <p style={{ fontSize: "1rem", lineHeight: "1.6" }}>{feedback}</p>
-                <button onClick={handleNextStep} style={{ padding: "12px 24px", fontSize: "16px", marginTop: "20px", cursor: "pointer", background: "#28a745", color: "white", border: "none", borderRadius: "8px" }}>
-                  {currentRound < TOTAL_ROUNDS ? "Next Question" : "Finish & View Report"}
-                </button>
+          {!isLoading && (
+            <>
+              {/* Question Display */}
+              <div className="question-card">
+                <h3 className="question-label">Question:</h3>
+                <p className="question-text">{question}</p>
               </div>
-            )}
-          </>
-        )}
+
+              {/* Answer and Feedback Section */}
+              {!isRoundOver ? (
+                <>
+                  <textarea
+                    value={userAnswer}
+                    onChange={(e) => setUserAnswer(e.target.value)}
+                    placeholder="Type your answer here..."
+                    rows={10}
+                    className="answer-textarea"
+                  />
+                  <button onClick={handleSubmitAnswer} className="btn btn-primary">
+                    Submit Answer
+                  </button>
+                </>
+              ) : (
+                <div className="feedback-card">
+                  <h3 className="feedback-title">Feedback:</h3>
+                  <p className="feedback-text">{feedback}</p>
+                  <button onClick={handleNextStep} className="btn btn-secondary">
+                    {currentRound < TOTAL_ROUNDS ? "Next Question" : "Finish & View Report"}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -13,56 +13,24 @@ function ExperiencePage({ experience, setExperience }) {
   };
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        background: "linear-gradient(135deg, #ffecd2, #fcb69f)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
-          width: "400px",
-          textAlign: "center",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px", color: "#333" }}>Select Experience</h2>
-        <select
-          value={experience}
-          onChange={(e) => setExperience(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            marginBottom: "20px",
-            fontSize: "16px",
-          }}
-        >
-          <option value="">-- Select Experience --</option>
-          <option value="Fresher">Fresher</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Expert">Expert</option>
-        </select>
+    <div className="experience-container">
+      <div className="experience-card glass fade-in">
+        <h2 className="experience-title">Select Experience</h2>
+        <div className="form-group">
+          <select
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
+            className="form-input"
+          >
+            <option value="">-- Select Experience --</option>
+            <option value="Fresher">Fresher</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
         <button
           onClick={handleNext}
-          style={{
-            width: "100%",
-            padding: "12px",
-            background: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            fontSize: "16px",
-            cursor: "pointer",
-          }}
+          className="btn btn-primary"
         >
           Continue ➡️
         </button>

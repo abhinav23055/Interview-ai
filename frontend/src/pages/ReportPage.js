@@ -16,118 +16,60 @@ function ReportPage({ progress, achievements, userLevel }) {
   };
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        background: "linear-gradient(135deg, #d4fc79, #96e6a1)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.15)",
-          textAlign: "center",
-          maxWidth: "600px",
-          width: "100%",
-        }}
-      >
-        <h2 style={{ color: "#333", marginBottom: "15px" }}>
+    <div className="report-container">
+      <div className="report-card glass fade-in">
+        <h2 className="report-title">
           📊 Interview Report
         </h2>
-        <p style={{ fontSize: "18px", color: "#555", marginBottom: "20px" }}>
-          Here’s your performance summary:
+        <p className="report-subtitle">
+          Here's your performance summary:
         </p>
 
         {/* Progress */}
-        <h3>Progress: {progress}%</h3>
-        <div
-          style={{
-            background: "#e0e0e0",
-            borderRadius: "20px",
-            overflow: "hidden",
-            height: "20px",
-            margin: "10px 0 30px 0",
-          }}
-        >
-          <div
-            style={{
-              width: `${progress}%`,
-              background: progress === 100 ? "#28a745" : "#007bff",
-              height: "100%",
-              transition: "width 0.5s ease-in-out",
-            }}
-          ></div>
+        <div className="progress-section">
+          <h3 className="progress-title">Progress: {progress}%</h3>
+          <div className="progress-bar">
+            <div 
+              className="progress-fill" 
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
         </div>
 
         {/* Achievements */}
-        <h3>🏆 Achievements Earned</h3>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: "10px",
-            marginBottom: "30px",
-          }}
-        >
-          {achievements.length > 0 ? (
-            achievements.map((ach, idx) => (
-              <span
-                key={idx}
-                style={{
-                  background: "#f0f9ff",
-                  color: "#007bff",
-                  padding: "8px 14px",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  boxShadow: "0px 2px 6px rgba(0,0,0,0.1)",
-                }}
-              >
-                {ach}
-              </span>
-            ))
-          ) : (
-            <p>No new achievements unlocked.</p>
-          )}
+        <div className="achievements-section">
+          <h3 className="achievements-title">🏆 Achievements Earned</h3>
+          <div className="achievements-grid">
+            {achievements.length > 0 ? (
+              achievements.map((ach, idx) => (
+                <span key={idx} className="achievement-badge">
+                  {ach}
+                </span>
+              ))
+            ) : (
+              <p className="no-achievements">No new achievements unlocked.</p>
+            )}
+          </div>
         </div>
 
         {/* Feedback */}
-        <h3>📌 Feedback</h3>
-        <p
-          style={{
-            fontSize: "16px",
-            margin: "20px 0",
-            color: "#444",
-            fontStyle: "italic",
-          }}
-        >
-          {getFeedback()}
-        </p>
-
-        <p style={{ marginTop: "10px" }}>⭐ Your Current Level: {userLevel}</p>
+        <div className="feedback-section">
+          <h3 className="feedback-title">📌 Feedback</h3>
+          <p className="feedback-text">
+            {getFeedback()}
+          </p>
+          <p className="level-text">⭐ Your Current Level: {userLevel}</p>
+        </div>
 
         {/* Back Button */}
-        <button
-          onClick={() => navigate("/dashboard")}
-          style={{
-            padding: "12px 24px",
-            marginTop: "20px",
-            background: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
-        >
-          ⬅ Back to Dashboard
-        </button>
+        <div className="report-actions">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="btn btn-primary"
+          >
+            ⬅ Back to Dashboard
+          </button>
+        </div>
       </div>
     </div>
   );

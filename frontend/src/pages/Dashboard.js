@@ -6,121 +6,115 @@ import Navbar from "../components/Navbar";
 function Dashboard({ userName, experience, level, sessionId, progress, achievements, userLevel }) {
   const navigate = useNavigate();
 
-  const buttonStyle = {
-    padding: "12px 24px",
-    fontSize: "16px",
-    background: "linear-gradient(135deg, #667eea, #764ba2)",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
-    transition: "all 0.3s ease",
-  };
-
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        background: "linear-gradient(135deg, #a1c4fd, #c2e9fb)",
-        minHeight: "100vh",
-      }}
-    >
-      <Navbar sessionId={sessionId} userName={userName} /> {/* Also pass userName to Navbar */}
+    <div className="dashboard-container">
+      <Navbar sessionId={sessionId} userName={userName} />
 
-      <div
-        className="fade-in"
-        style={{
-          background: "white",
-          borderRadius: "12px",
-          padding: "40px",
-          maxWidth: "800px",
-          margin: "40px auto",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.15)",
-        }}
-      >
-        <h1 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
-          🎯 Dashboard
-        </h1>
-
-        {/* 👇 THIS IS THE UPDATED LINE 👇 */}
-        <p style={{ textAlign: "center", color: "#666", marginBottom: "30px" }}>
-          Welcome back, <b>{userName || "Guest"}</b> 👋
-        </p>
-
-        {/* Quick Info */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            marginBottom: "30px",
-            textAlign: "center",
-          }}
-        >
-          <div>
-            <h3>Experience</h3>
-            <p>{experience || "Not set"}</p>
-          </div>
-          <div>
-            <h3>Session Level</h3>
-            <p>{level || "Not set"}</p>
-          </div>
-          <div>
-            <h3>User Level</h3>
-            <p>⭐ {userLevel}</p>
+      <div className="container">
+        <div className="dashboard-header fade-in">
+          <div className="welcome-section">
+            <h1 className="dashboard-title">
+              <span className="dashboard-icon">🎯</span>
+              Dashboard
+            </h1>
+            <p className="welcome-message">
+              Welcome back, <span className="user-highlight">{userName || "Guest"}</span> 👋
+            </p>
+            <p className="dashboard-subtitle">
+              Ready to ace your next interview? Let's get started!
+            </p>
           </div>
         </div>
 
-        {/* Session Progress */}
-        <div style={{ marginBottom: "40px" }}>
-          <h3 style={{ marginBottom: "10px" }}>Current Session Progress</h3>
-          <div
-            style={{
-              background: "#e0e0e0",
-              borderRadius: "20px",
-              overflow: "hidden",
-              height: "25px",
-            }}
-          >
-            <div
-              style={{
-                width: `${progress}%`,
-                background: progress === 100 ? "#28a745" : "#007bff",
-                height: "100%",
-                transition: "width 0.5s ease-in-out",
-              }}
-            ></div>
+        {/* Stats Cards */}
+        <div className="stats-grid fade-in">
+          <div className="stat-card">
+            <div className="stat-icon">💼</div>
+            <div className="stat-content">
+              <h3 className="stat-title">Experience</h3>
+              <p className="stat-value">{experience || "Not set"}</p>
+            </div>
           </div>
-          <p style={{ textAlign: "right", marginTop: "5px" }}>
-            {progress}% Completed
-          </p>
+          
+          <div className="stat-card">
+            <div className="stat-icon">🎚️</div>
+            <div className="stat-content">
+              <h3 className="stat-title">Session Level</h3>
+              <p className="stat-value">{level || "Not set"}</p>
+            </div>
+          </div>
+          
+          <div className="stat-card">
+            <div className="stat-icon">⭐</div>
+            <div className="stat-content">
+              <h3 className="stat-title">User Level</h3>
+              <p className="stat-value">Level {userLevel}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Section */}
+        <div className="progress-section fade-in">
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">
+                <span className="progress-icon">📈</span>
+                Session Progress
+              </h3>
+            </div>
+            <div className="card-body">
+              <div className="progress-container">
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
+                <div className="progress-info">
+                  <span className="progress-text">
+                    {progress}% Complete
+                  </span>
+                  <span className="progress-emoji">
+                    {progress === 100 ? "🎉" : progress >= 75 ? "🔥" : progress >= 50 ? "💪" : "🚀"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Motivational Tip */}
-        <div
-          style={{
-            marginBottom: "30px",
-            padding: "20px",
-            borderRadius: "10px",
-            background: "#f0f9ff",
-            color: "#007bff",
-            textAlign: "center",
-            fontStyle: "italic",
-          }}
-        >
-          💡 Tip: Consistency is key! Complete at least one round every day.
+        <div className="tip-section fade-in">
+          <div className="tip-card">
+            <div className="tip-icon">💡</div>
+            <div className="tip-content">
+              <h4 className="tip-title">Daily Tip</h4>
+              <p className="tip-text">
+                Consistency is key! Complete at least one round every day to build confidence and improve your skills.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Start Interview Button */}
-        <div style={{ textAlign: "center" }}>
-          <button
-            onClick={() => navigate("/rounds")}
-            style={buttonStyle}
-            onMouseOver={(e) => (e.target.style.opacity = "0.85")}
-            onMouseOut={(e) => (e.target.style.opacity = "1")}
-          >
-            🚀 Start Interview
-          </button>
+        {/* Action Buttons */}
+        <div className="actions-section fade-in">
+          <div className="action-buttons">
+            <button
+              onClick={() => navigate("/rounds")}
+              className="btn btn-primary action-button"
+            >
+              <span className="btn-icon">🚀</span>
+              <span>Start Interview</span>
+            </button>
+            
+            <button
+              onClick={() => navigate("/profile")}
+              className="btn btn-secondary action-button"
+            >
+              <span className="btn-icon">👤</span>
+              <span>View Profile</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

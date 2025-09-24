@@ -15,73 +15,46 @@ function LevelPage({ level, setLevel }) {
   };
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        background: "linear-gradient(135deg, #a1c4fd, #c2e9fb)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
-          width: "400px",
-          textAlign: "center",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px", color: "#333" }}>Select Difficulty</h2>
+    <div className="level-container">
+      <div className="level-card glass fade-in">
+        <h2 className="level-title">Select Difficulty</h2>
 
-        <div style={{ marginBottom: "20px", textAlign: "left" }}>
-          <label style={{ display: "block", marginBottom: "10px" }}>
+        <div className="difficulty-options">
+          <label className="radio-option">
             <input
               type="radio"
               value="Easy"
               checked={selectedLevel === "Easy"}
               onChange={(e) => setSelectedLevel(e.target.value)}
-              style={{ marginRight: "10px" }}
+              className="radio-input"
             />
-            Easy 🌱
+            <span className="radio-label">Easy 🌱</span>
           </label>
-          <label style={{ display: "block", marginBottom: "10px" }}>
+          <label className="radio-option">
             <input
               type="radio"
               value="Medium"
               checked={selectedLevel === "Medium"}
               onChange={(e) => setSelectedLevel(e.target.value)}
-              style={{ marginRight: "10px" }}
+              className="radio-input"
             />
-            Medium ⚡
+            <span className="radio-label">Medium ⚡</span>
           </label>
-          <label style={{ display: "block" }}>
+          <label className="radio-option">
             <input
               type="radio"
               value="Hard"
               checked={selectedLevel === "Hard"}
               onChange={(e) => setSelectedLevel(e.target.value)}
-              style={{ marginRight: "10px" }}
+              className="radio-input"
             />
-            Hard 🔥
+            <span className="radio-label">Hard 🔥</span>
           </label>
         </div>
 
         <button
           onClick={handleContinue}
-          style={{
-            width: "100%",
-            padding: "12px",
-            background: "#28a745",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            fontSize: "16px",
-            cursor: "pointer",
-          }}
+          className="btn btn-primary"
         >
           Continue ➡️
         </button>

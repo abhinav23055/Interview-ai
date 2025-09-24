@@ -51,86 +51,103 @@ function LoginPage({ setSessionId, setUserName }) {
   };
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        background: "linear-gradient(135deg, #74ebd5, #9face6)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
-          width: "350px",
-          textAlign: "center",
-        }}
-      >
+    <div className="auth-container">
+      <div className="auth-background">
+        <div className="floating-shapes">
+          <div className="shape shape-1"></div>
+          <div className="shape shape-2"></div>
+          <div className="shape shape-3"></div>
+        </div>
+      </div>
+      
+      <div className="auth-card glass fade-in">
         {/* Tabs */}
-        <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
-          <button onClick={() => setIsLogin(true)} style={{ flex: 1, padding: "10px", border: "none", borderBottom: isLogin ? "3px solid #007bff" : "3px solid transparent", background: "transparent", fontSize: "16px", cursor: "pointer" }}>
+        <div className="auth-tabs">
+          <button 
+            onClick={() => setIsLogin(true)} 
+            className={`tab-button ${isLogin ? 'active' : ''}`}
+          >
             Login
           </button>
-          <button onClick={() => setIsLogin(false)} style={{ flex: 1, padding: "10px", border: "none", borderBottom: !isLogin ? "3px solid #007bff" : "3px solid transparent", background: "transparent", fontSize: "16px", cursor: "pointer" }}>
+          <button 
+            onClick={() => setIsLogin(false)} 
+            className={`tab-button ${!isLogin ? 'active' : ''}`}
+          >
             Signup
           </button>
         </div>
 
         {/* Title */}
-        <h2 style={{ marginBottom: "20px", color: "#333" }}>
-          {isLogin ? "Welcome Back 👋" : "Create an Account ✨"}
-        </h2>
+        <div className="auth-header">
+          <div className="auth-icon">
+            {isLogin ? "👋" : "✨"}
+          </div>
+          <h2 className="auth-title">
+            {isLogin ? "Welcome Back" : "Create Account"}
+          </h2>
+          <p className="auth-subtitle">
+            {isLogin ? "Sign in to continue your journey" : "Join us and start practicing"}
+          </p>
+        </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit}>
-          {/* 5. Conditionally render the new name input field for signup */}
+        <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
-            <input
-              type="text"
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              style={{ width: "100%", padding: "12px", marginBottom: "15px", borderRadius: "6px", border: "1px solid #ccc" }}
-            />
+            <div className="form-group">
+              <label className="form-label">Full Name</label>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
           )}
 
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: "100%", padding: "12px", marginBottom: "15px", borderRadius: "6px", border: "1px solid #ccc" }}
-          />
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%", padding: "12px", marginBottom: "15px", borderRadius: "6px", border: "1px solid #ccc" }}
-          />
-          <button type="submit" style={{ width: "100%", padding: "12px", background: "#007bff", color: "white", border: "none", borderRadius: "6px", fontSize: "16px", cursor: "pointer" }}>
-            {isLogin ? "Login" : "Signup"}
+          <div className="form-group">
+            <label className="form-label">Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          
+          <button type="submit" className="btn btn-primary auth-submit">
+            <span>{isLogin ? "Sign In" : "Create Account"}</span>
+            <span className="btn-icon">→</span>
           </button>
         </form>
 
         {/* Switch */}
-        <p style={{ marginTop: "15px", fontSize: "14px", color: "#555" }}>
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <span
-            style={{ color: "#007bff", cursor: "pointer" }}
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? "Sign up" : "Log in"}
-          </span>
-        </p>
+        <div className="auth-switch">
+          <p>
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+            <span
+              className="switch-link"
+              onClick={() => setIsLogin(!isLogin)}
+            >
+              {isLogin ? "Sign up" : "Log in"}
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

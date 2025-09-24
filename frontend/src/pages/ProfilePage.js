@@ -21,79 +21,57 @@ function ProfilePage({ userName, sessionId, experience, userLevel, progress, ach
   };
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        background: "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
-        minHeight: "100vh",
-      }}
-    >
+    <div className="profile-container">
       <Navbar sessionId={sessionId} userName={userName}/>
 
-      <div
-        className="fade-in"
-        style={{
-          background: "white",
-          borderRadius: "12px",
-          padding: "40px",
-          maxWidth: "800px",
-          margin: "40px auto",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.15)",
-        }}
-      >
-        <h1 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
-          👤 Profile
-        </h1>
-        
-        {/* 👇 THIS IS THE UPDATED LINE 👇 */}
-        <p style={{ textAlign: "center", color: "#666", marginBottom: "30px" }}>
-          Welcome, <b>{userName}</b>
-        </p>
+      <div className="container">
+        <div className="profile-card glass fade-in">
+          <h1 className="profile-title">
+            👤 Profile
+          </h1>
+          
+          <p className="profile-welcome">
+            Welcome, <span className="user-highlight">{userName}</span>
+          </p>
 
-        {/* Lifetime Stats - Now using props from App.js */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            marginBottom: "30px",
-            textAlign: "center",
-          }}
-        >
-          <div>
-            <h3>Total Progress</h3>
-            <p>{progress || 0}%</p>
+          {/* Lifetime Stats */}
+          <div className="profile-stats">
+            <div className="profile-stat">
+              <h3>Total Progress</h3>
+              <p>{progress || 0}%</p>
+            </div>
+            <div className="profile-stat">
+              <h3>Experience</h3>
+              <p>{experience || "Not Set"}</p>
+            </div>
+            <div className="profile-stat">
+              <h3>User Level</h3>
+              <p>⭐ {userLevel}</p>
+            </div>
           </div>
-          <div>
-            <h3>Experience</h3>
-            <p>{experience || "Not Set"}</p>
-          </div>
-          <div>
-            <h3>User Level</h3>
-            <p>⭐ {userLevel}</p>
-          </div>
-        </div>
 
-        {/* Achievements */}
-        <div style={{ marginBottom: "40px" }}>
-          <h3 style={{ marginBottom: "15px" }}>🏆 Achievements</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            {achievements && achievements.length > 0 ? (
-              achievements.map((ach, idx) => (
-                <span key={idx} style={{ background: "#fff0f5", color: "#d63384", padding: "8px 14px", borderRadius: "20px", fontSize: "14px", boxShadow: "0px 2px 6px rgba(0,0,0,0.1)" }}>
-                  {ach}
-                </span>
-              ))
-            ) : (
-              <p>No achievements unlocked yet.</p>
-            )}
+          {/* Achievements */}
+          <div className="achievements-section">
+            <h3 className="achievements-title">🏆 Achievements</h3>
+            <div className="achievements-grid">
+              {achievements && achievements.length > 0 ? (
+                achievements.map((ach, idx) => (
+                  <span key={idx} className="achievement-badge">
+                    {ach}
+                  </span>
+                ))
+              ) : (
+                <p className="no-achievements">No achievements unlocked yet.</p>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Back Button */}
-        <div style={{ textAlign: "center" }}>
-          <button style={buttonStyle} onClick={() => navigate("/dashboard")}>
-            ⬅ Back to Dashboard
-          </button>
+          {/* Back Button */}
+          <div className="profile-actions">
+            <button className="btn btn-primary" onClick={() => navigate("/dashboard")}>
+              ⬅ Back to Dashboard
+            </button>
+          </div>
         </div>
       </div>
     </div>
