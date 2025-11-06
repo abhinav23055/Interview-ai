@@ -1,15 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+// Navbar import removed so App.js controls the navbar
 
 // The userName prop is already being received correctly.
-function Dashboard({ userName, experience, level, sessionId, progress, achievements, userLevel }) {
+function Dashboard({ userName, experience, level, role, sessionId, progress, achievements, userLevel, setExperience, setLevel, setRole }) {
   const navigate = useNavigate();
 
   return (
     <div className="dashboard-container">
-      <Navbar sessionId={sessionId} userName={userName} />
-
       <div className="container">
         <div className="dashboard-header fade-in">
           <div className="welcome-section">
@@ -33,14 +31,43 @@ function Dashboard({ userName, experience, level, sessionId, progress, achieveme
             <div className="stat-content">
               <h3 className="stat-title">Experience</h3>
               <p className="stat-value">{experience || "Not set"}</p>
+              <button
+                onClick={() => navigate("/experience")}
+                className="btn btn-ghost btn-small"
+                style={{ marginTop: "8px", fontSize: "0.85rem" }}
+              >
+                Change
+              </button>
             </div>
           </div>
           
           <div className="stat-card">
             <div className="stat-icon">🎚️</div>
             <div className="stat-content">
-              <h3 className="stat-title">Session Level</h3>
+              <h3 className="stat-title">Difficulty</h3>
               <p className="stat-value">{level || "Not set"}</p>
+              <button
+                onClick={() => navigate("/level")}
+                className="btn btn-ghost btn-small"
+                style={{ marginTop: "8px", fontSize: "0.85rem" }}
+              >
+                Change
+              </button>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-icon">👔</div>
+            <div className="stat-content">
+              <h3 className="stat-title">Role</h3>
+              <p className="stat-value">{role || "Not set"}</p>
+              <button
+                onClick={() => navigate("/role")}
+                className="btn btn-ghost btn-small"
+                style={{ marginTop: "8px", fontSize: "0.85rem" }}
+              >
+                Change
+              </button>
             </div>
           </div>
           
@@ -100,13 +127,13 @@ function Dashboard({ userName, experience, level, sessionId, progress, achieveme
         <div className="actions-section fade-in">
           <div className="action-buttons">
             <button
-              onClick={() => navigate("/rounds")}
+              onClick={() => navigate("/agent")}
               className="btn btn-primary action-button"
             >
-              <span className="btn-icon">🚀</span>
-              <span>Start Interview</span>
+              <span className="btn-icon">🤖</span>
+              <span>Start AI Agent Interview</span>
             </button>
-            
+
             <button
               onClick={() => navigate("/profile")}
               className="btn btn-secondary action-button"

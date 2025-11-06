@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
   // profile fields
   experience: { type: String, default: "" },
   level: { type: String, default: "" },
+  role: { type: String, default: "" },
   progress: { type: Number, default: 0 },
   achievements: { type: [String], default: [] },
   userLevel: { type: Number, default: 1 },
@@ -126,11 +127,11 @@ app.get("/profile/:userId", async (req, res) => {
 // ✏️ Update profile
 app.put("/profile/:userId", async (req, res) => {
   try {
-    const { experience, level, progress, achievements, userLevel } = req.body;
+    const { experience, level, role, progress, achievements, userLevel } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
-      { experience, level, progress, achievements, userLevel },
+      { experience, level, role, progress, achievements, userLevel },
       { new: true }
     ).select("-password");
 

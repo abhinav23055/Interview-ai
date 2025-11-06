@@ -1,11 +1,20 @@
+// frontend/src/pages/RoundsPage.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 // Define the total number of rounds for the interview
 const TOTAL_ROUNDS = 3;
 
-function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, userLevel, setAchievements, achievements }) {
+function RoundsPage({
+  sessionId,
+  experience,
+  level,
+  setProgress,
+  setUserLevel,
+  userLevel,
+  setAchievements,
+  achievements,
+}) {
   const navigate = useNavigate();
 
   // State for the multi-round interview flow
@@ -17,7 +26,7 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
   const [isRoundOver, setIsRoundOver] = useState(false);
   const [sessionAchievements, setSessionAchievements] = useState([]);
 
-  // This function fetches a new question from the backend
+  // This function fetches a new question from the backend (relative path -> works with CRA proxy)
   const fetchQuestion = async () => {
     try {
       setIsLoading(true);
@@ -25,15 +34,25 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
       setUserAnswer("");
       setIsRoundOver(false);
 
-      const res = await fetch(`http://localhost:5000/api/get-question`, {
+      // POST to /api/generate-question (backend should return JSON)
+      const res = await fetch(`/api/generate-question`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experience, level }),
+        body: JSON.stringify({ role: "Software Engineer", level }), // keep it depersonalized
       });
-      const data = await res.json();
-      if (data.success) {
-        setQuestion(data.question);
+
+      const text = await res.text(); // read as text first (more robust)
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        // fallback: sometimes server returns plain text or a different JSON shape
+        data = { questionText: text };
       }
+
+      // Support multiple shapes: { questionText } or { question }
+      const q = data.questionText || data.question || data.questionText || "No question available.";
+      setQuestion(q);
     } catch (error) {
       console.error("Error fetching question:", error);
       setQuestion("Sorry, we couldn't load a question. Please try again.");
@@ -41,10 +60,11 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
       setIsLoading(false);
     }
   };
-  
-  // Fetch the first question when the page loads
+
+  // Fetch the first question when the page loads or level changes
   useEffect(() => {
     fetchQuestion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [experience, level]);
 
   // Handle submitting the user's answer
@@ -53,17 +73,30 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
       alert("Please provide an answer before submitting.");
       return;
     }
-    
+
     try {
       setIsLoading(true);
-      const res = await fetch(`http://localhost:5000/api/evaluate-answer`, {
+
+      // POST to /api/evaluate-answer (relative path)
+      const res = await fetch(`/api/evaluate-answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, answer: userAnswer }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setFeedback(data.feedback);
+
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        data = { feedback: text || "No feedback returned." };
+      }
+
+      // If API returns success flag, check it; otherwise accept whatever is returned
+      if (data.success === false) {
+        setFeedback(data.message || "Evaluation failed.");
+      } else {
+        setFeedback(data.feedback || data.message || "Evaluation complete.");
         setIsRoundOver(true); // Mark the round as over to show feedback
       }
     } catch (error) {
@@ -87,8 +120,10 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
 
     // Check if there are more rounds to go
     if (currentRound < TOTAL_ROUNDS) {
-      setCurrentRound(prev => prev + 1);
-      setProgress(Math.round((currentRound / TOTAL_ROUNDS) * 100)); // Update progress bar
+      const nextRound = currentRound + 1;
+      setCurrentRound(nextRound);
+      // Update progress using the nextRound value
+      if (setProgress) setProgress(Math.round((nextRound / TOTAL_ROUNDS) * 100));
       fetchQuestion(); // Fetch the next question
     } else {
       // This was the final round, so we finish the interview
@@ -101,18 +136,18 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
     setIsLoading(true);
 
     // Add final achievement
-    const finalAchievementsList = [...achievements, ...finalSessionAchievements, "Full Interview Complete"];
-    
+    const finalAchievementsList = [...(achievements || []), ...finalSessionAchievements, "Full Interview Complete"];
+
     // Update final state in App.js
-    setProgress(100);
-    setUserLevel(userLevel + 1);
-    setAchievements(finalAchievementsList);
-    
-    // Save all final data to the backend
+    if (setProgress) setProgress(100);
+    if (setUserLevel) setUserLevel(userLevel + 1);
+    if (setAchievements) setAchievements(finalAchievementsList);
+
+    // Save all final data to the backend (relative path to match proxy)
     try {
-      await fetch(`http://localhost:5000/profile/${sessionId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      await fetch(`/api/save-session/${sessionId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           progress: 100,
           userLevel: userLevel + 1,
@@ -122,13 +157,12 @@ function RoundsPage({ sessionId, experience, level, setProgress, setUserLevel, u
     } catch (error) {
       console.error("Failed to save final progress:", error);
     } finally {
-      navigate('/report'); // Navigate to the report page
+      navigate("/report"); // Navigate to the report page
     }
   };
 
   return (
     <div className="rounds-container">
-      <Navbar sessionId={sessionId} />
       <div className="container">
         <div className="rounds-card glass fade-in">
           <h1 className="rounds-title">Interview Session</h1>
