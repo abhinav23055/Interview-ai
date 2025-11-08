@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+// src/pages/LevelPage.js
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LevelPage({ level, setLevel, sessionId }) {
   const [selectedLevel, setSelectedLevel] = useState(level || "");
+  const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (level) setSelectedLevel(level);
+  }, [level]);
 
   const handleContinue = async () => {
     if (!selectedLevel) {
       alert("⚠️ Please select a difficulty level!");
       return;
     }
-    
+
+    setSaving(true);
+
     if (sessionId) {
       try {
         const response = await fetch(`http://localhost:5000/profile/${sessionId}`, {
@@ -22,15 +30,22 @@ function LevelPage({ level, setLevel, sessionId }) {
         if (data.success) {
           setLevel(selectedLevel);
           navigate("/dashboard");
+        } else {
+          // fallback: still update local and navigate
+          setLevel(selectedLevel);
+          navigate("/dashboard");
         }
       } catch (error) {
         console.error("Failed to save level:", error);
         setLevel(selectedLevel);
         navigate("/dashboard");
+      } finally {
+        setSaving(false);
       }
     } else {
       setLevel(selectedLevel);
       navigate("/dashboard");
+      setSaving(false);
     }
   };
 
@@ -38,6 +53,12 @@ function LevelPage({ level, setLevel, sessionId }) {
     <div className="level-container">
       <div className="level-card glass fade-in">
         <h2 className="level-title">Select Difficulty</h2>
+
+        {/* Instruction text added to mirror the Experience page */}
+        <p className="text-muted" style={{ marginBottom: "1rem" }}>
+          Choose the difficulty level that best matches your preparedness. This will tailor the interview
+          questions so they fit your current skill level.
+        </p>
 
         <div className="difficulty-grid">
           {[
@@ -64,8 +85,10 @@ function LevelPage({ level, setLevel, sessionId }) {
         <button
           onClick={handleContinue}
           className="btn btn-primary"
+          disabled={!selectedLevel || saving}
+          aria-disabled={!selectedLevel || saving}
         >
-          Continue ➡️
+          {saving ? "Saving…" : "Continue ➡️"}
         </button>
       </div>
     </div>

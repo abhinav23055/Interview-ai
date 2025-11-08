@@ -1550,11 +1550,10 @@ p {
 /* Stylish difficulty cards */
 .difficulty-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-md);
   margin-bottom: var(--space-xl);
   width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -3025,11 +3024,11 @@ code {
   transform: translateZ(0);
 }
 
-.3d-card-content {
+.\33 d-card-content {
   transform: translateZ(20px);
 }
 
-.3d-card-title {
+.\33 d-card-title {
   font-size: 2rem;
   color: var(--text-primary);
   margin-bottom: var(--space-lg);
@@ -3040,12 +3039,12 @@ code {
   background-clip: text;
 }
 
-.3d-card-list {
+.\33 d-card-list {
   list-style: none;
   padding: 0;
 }
 
-.3d-card-list li {
+.\33 d-card-list li {
   color: var(--text-secondary);
   padding: var(--space-md);
   margin-bottom: var(--space-sm);
@@ -3057,7 +3056,7 @@ code {
   transition: all 0.3s ease;
 }
 
-.3d-card-list li:hover {
+.\33 d-card-list li:hover {
   background: rgba(51, 65, 85, 0.5);
   border-left-color: rgba(59, 130, 246, 0.8);
   transform: translateX(5px);
@@ -3116,7 +3115,7 @@ code {
     padding: var(--space-xl);
   }
   
-  .3d-card-title {
+  .\33 d-card-title {
     font-size: 1.5rem;
   }
 }

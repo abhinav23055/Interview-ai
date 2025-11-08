@@ -1,64 +1,98 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function ExperiencePage({ experience, setExperience, sessionId }) {
   const navigate = useNavigate();
+  const [selectedExperience, setSelectedExperience] = useState(experience || "");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-  const saveExperience = async (exp) => {
-    if (sessionId) {
-      try {
-        const response = await fetch(`http://localhost:5000/profile/${sessionId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ experience: exp }),
-        });
-        const data = await response.json();
-        if (data.success) {
-          setExperience(exp);
-        }
-      } catch (error) {
-        console.error("Failed to save experience:", error);
-      }
-    } else {
-      setExperience(exp);
-    }
+  useEffect(() => {
+    if (experience) setSelectedExperience(experience);
+  }, [experience]);
+
+  const EXPERIENCES = [
+    { key: "Fresher", emoji: "🌱", title: "Fresher", desc: "New to interviews or starting your journey" },
+    { key: "Intermediate", emoji: "🚀", title: "Intermediate", desc: "1–3 years of experience" },
+    { key: "Expert", emoji: "🧠", title: "Expert", desc: "Experienced professional or senior-level" },
+  ];
+
+  const handleSelect = (key) => {
+    setSelectedExperience(key);
+    setError("");
   };
 
-  const handleNext = () => {
-    if (experience) {
+  const handleContinue = async () => {
+    if (!selectedExperience) {
+      setError("Please select your experience level before continuing.");
+      return;
+    }
+
+    setSaving(true);
+
+    const API =
+      import.meta?.env?.VITE_API_URL ||
+      process.env?.REACT_APP_API_URL ||
+      "http://localhost:5000";
+
+    try {
+      if (sessionId) {
+        const res = await fetch(`${API}/profile/${sessionId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ experience: selectedExperience }),
+        });
+
+        const data = await res.json().catch(() => null);
+        if (!res.ok || (data && data.success === false)) {
+          throw new Error(data?.message || `Failed to save experience (${res.status})`);
+        }
+      }
+
+      setExperience(selectedExperience);
       navigate("/level");
-    } else {
-      alert("⚠️ Please select your experience level!");
+    } catch (err) {
+      console.error("Failed to save experience:", err);
+      setExperience(selectedExperience);
+      navigate("/level");
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
-    <div className="experience-container">
-      <div className="experience-card glass fade-in">
-        <h2 className="experience-title">Select Experience</h2>
-        <div className="experience-options">
-          {[
-            { key: "Fresher", emoji: "🌟", label: "Fresher" },
-            { key: "Intermediate", emoji: "🚀", label: "Intermediate" },
-            { key: "Expert", emoji: "🧠", label: "Expert" },
-          ].map((opt) => (
+    <div className="level-container">
+      <div className="level-card glass fade-in" role="region" aria-label="Select Experience">
+        <h2 className="level-title">Select Experience</h2>
+        <p className="text-muted">Choose your current experience level to personalize your interview questions.</p>
+
+        <div className="difficulty-grid">
+          {EXPERIENCES.map((exp) => (
             <button
-              key={opt.key}
+              key={exp.key}
               type="button"
-              onClick={() => saveExperience(opt.key)}
-              className={`chip-option ${experience === opt.key ? "selected" : ""}`}
-              aria-pressed={experience === opt.key}
+              onClick={() => handleSelect(exp.key)}
+              className={`difficulty-card ${selectedExperience === exp.key ? "selected" : ""}`}
+              aria-pressed={selectedExperience === exp.key}
             >
-              <span className="chip-emoji">{opt.emoji}</span>
-              <span className="chip-label">{opt.label}</span>
+              <div className="difficulty-emoji">{exp.emoji}</div>
+              <div className="difficulty-content">
+                <div className="difficulty-title">{exp.title}</div>
+                <div className="difficulty-desc">{exp.desc}</div>
+              </div>
             </button>
           ))}
         </div>
+
+        {error && <p className="text-muted" style={{ color: "var(--warning-color)" }}>{error}</p>}
+
         <button
-          onClick={handleNext}
+          onClick={handleContinue}
           className="btn btn-primary"
+          disabled={!selectedExperience || saving}
+          aria-disabled={!selectedExperience || saving}
         >
-          Continue ➡️
+          {saving ? "Saving…" : "Continue ➡️"}
         </button>
       </div>
     </div>
