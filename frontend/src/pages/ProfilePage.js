@@ -290,10 +290,6 @@ function ProfilePage({ userName, sessionId, experience, level, userLevel, progre
                       <span className="action-icon">🤖</span>
                       <span className="action-text">Start AI Interview</span>
                     </button>
-                    <button className="action-card" onClick={() => navigate("/rounds")}>
-                      <span className="action-icon">🚀</span>
-                      <span className="action-text">Practice Round</span>
-                    </button>
                     <button className="action-card" onClick={() => navigate("/dashboard")}>
                       <span className="action-icon">📊</span>
                       <span className="action-text">View Dashboard</span>

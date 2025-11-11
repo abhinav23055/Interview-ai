@@ -14,7 +14,6 @@ import RolePage from "./pages/RolePage";
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
-import RoundsPage from "./pages/RoundsPage";
 import ReportPage from "./pages/ReportPage";
 import AgentPage from "./pages/AgentPage";
 
@@ -141,25 +140,6 @@ function App() {
                 achievements={achievements}
                 setExperience={setExperience}
                 setLevel={setLevel}
-              />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/rounds"
-          element={
-            <ProtectedRoute sessionId={sessionId}>
-              <RoundsPage
-                sessionId={sessionId}
-                experience={experience}
-                level={level}
-                setProgress={setProgress}
-                progress={progress}
-                setAchievements={setAchievements}
-                achievements={achievements}
-                userLevel={userLevel}
-                setUserLevel={setUserLevel}
               />
             </ProtectedRoute>
           }
